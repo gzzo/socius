@@ -7,7 +7,7 @@ class Home extends React.Component {
   render() {
     return (
       <Page>
-        <Grid width={7} height={5} />
+        <Grid width={7} height={7} />
       </Page>
     )
   }

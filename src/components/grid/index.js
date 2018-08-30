@@ -9,14 +9,20 @@ class Grid extends React.Component {
     const { width, height } = this.props
 
     return (
-      <div className={css.grid} style={{'--width': '100px', '--columns': width}}>
-        {_.range(width * height).map(row => {
+      <div className={css.grid} style={{'--Nhexa': width}}>
+        {_.range(width * height).map(cell => {
           const classes = classNames(css.tile, {
-            [css.oddColumnTile]: row % (width * 2) >= width
+            [css.oddColumnTile]: cell % (width * 2) >= width
           })
+
+          const column = cell % width
+          const row = Math.floor(cell / width) % height
+
           return (
-            <div className={classes} key={row}>
-              X
+            <div className={classes} key={cell} onClick={() => {console.log(column, row)}}>
+              <div className={css.insideTile}>
+                moo
+              </div>
             </div>
           )
         })}
