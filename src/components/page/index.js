@@ -1,11 +1,15 @@
 import React from 'react'
 
-import css from './index.scss'
-
 class Page extends React.Component {
+  onContextMenu = (event) => {
+    event.preventDefault()
+    console.log('right click')
+    return false;
+  }
+
   render() {
     return (
-      <div className={css.page}>
+      <div onContextMenu={this.onContextMenu}>
         {this.props.children}
       </div>
     )
