@@ -1,7 +1,8 @@
-import { combineReducers } from "redux";
-import { all } from "redux-saga/effects";
+import { combineReducers } from 'redux';
+import { all } from 'redux-saga/effects';
 
-const sampleReducer = (state = {}, action) => state;
+import { reducer as game } from './game'
+
 
 function* sampleRootSaga() {}
 
@@ -10,5 +11,5 @@ export function* rootSaga() {
 }
 
 export const reducers = combineReducers({
-  sampleReducer
+  game,
 });

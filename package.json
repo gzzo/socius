@@ -30,7 +30,9 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
+    "connected-react-router": "^4.4.1",
     "cssnano": "^4.1.0",
+    "history": "^4.7.2",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "postcss-import": "^12.0.0",

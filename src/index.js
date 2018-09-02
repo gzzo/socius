@@ -1,26 +1,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { reducers, rootSaga } from 'reducers';
-import createSagaMiddleware from 'redux-saga';
+import { Provider } from 'react-redux'
+import { createStore, compose, applyMiddleware } from 'redux'
+import { reducers, rootSaga } from 'reducers'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+import createSagaMiddleware from 'redux-saga'
+import { createBrowserHistory } from 'history'
+
 
 import App from './app'
 
+const history = createBrowserHistory()
+
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
-  reducers,
-  applyMiddleware(sagaMiddleware),
+  connectRouter(history)(reducers),
+  compose(
+    applyMiddleware(
+      routerMiddleware(history),
+      sagaMiddleware,
+    ),
+  ),
 );
 sagaMiddleware.run(rootSaga);
 
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App history={history} />
     </Provider>,
     document.getElementById('root')
   )
@@ -28,6 +35,9 @@ const render = () => {
 
 if (module.hot) {
   module.hot.accept('app', render)
+  module.hot.accept('reducers', () => {
+    store.replaceReducer(connectRouter(history)(reducers))
+  })
 }
 
 render()

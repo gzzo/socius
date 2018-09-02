@@ -1,15 +1,15 @@
 :root {
-  --gap: 10px;
+  --gap: 5px;
 }
 
 .grid {
-  --size: calc(100vw / var(--Nhexa) * .8);
+  --size: calc(100vw / 8 * .8);
   width: calc((var(--size) + var(--gap)) * calc(var(--Nhexa)));
   display: grid;
   grid-template-columns: repeat(var(--Nhexa), 1fr);
   grid-gap: var(--gap);
-  margin-right: calc(var(--size) / 2);
-  margin-bottom: calc(var(--size) / 4);
+  margin-right: calc((var(--size) + var(--gap)) / 2);
+  margin-bottom: calc((var(--size) + var(--gap)) / 4);
 }
 .tile {
   background: cadetblue;
