@@ -11,18 +11,18 @@ class Grid extends React.Component {
 
     return (
       <div className={css.grid} style={{'--columns': columns}}>
-        {_.range(columns * rows).map(tile => {
-          const column = tile % columns
-          const row = Math.floor(tile / columns) % rows
-          const isOddColumn = tile % (columns * 2) >= columns
+        {_.range(columns * rows).map(tileNumber => {
+          const column = tileNumber % columns
+          const row = Math.floor(tileNumber / columns) % rows
+          const isOddColumn = tileNumber % (columns * 2) >= columns
 
           return (
             <Tile
-              key={tile}
+              key={tileNumber}
               row={row}
               column={column}
               isOddColumn={isOddColumn}
-              tile={tile}
+              tileNumber={tileNumber}
             />
           )
         })}

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { updateArrayItem } from './reducerUtil'
+import { updateArrayItem, updateNearbyTiles, updateTiles } from './reducerUtil'
 
 const CREATE_GAME = 'game/CREATE_GAME'
 
@@ -15,11 +15,11 @@ export const createGame = (name, columns, rows) => {
   }
 }
 
-export const toggleTile = (name, tile) => {
+export const toggleTile = (name, tileNumber) => {
   return {
     type: TOGGLE_TILE,
     name,
-    tile,
+    tileNumber,
   }
 }
 
@@ -29,9 +29,10 @@ const createGameState = (action) => {
       columns: action.columns,
       rows: action.rows,
     },
-    grid: _.range(action.columns * action.rows).map(cell => {
+    grid: _.range(action.columns * action.rows).map(tileNumber => {
       return {
-        info: 'info'
+        info: 'info',
+        tileNumber,
       }
     })
   }
@@ -43,10 +44,8 @@ const spawnUnit = (grid, index, unit) => {
 
 const initialGame = createGameState(createGame('test', 20, 20))
 initialGame.grid = spawnUnit(initialGame.grid, 3, {
-  type: 'settler'
+  unit: 'settler'
 })
-
-console.log(initialGame)
 
 const initialState = {
   games: {
@@ -57,7 +56,7 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
 
-    case CREATE_GAME:
+    case CREATE_GAME: {
       const game = createGameState(action)
 
       return {
@@ -67,20 +66,33 @@ export const reducer = (state = initialState, action) => {
           [action.name]: game
         },
       }
+    }
 
-    case TOGGLE_TILE:
+    case TOGGLE_TILE: {
+      const game = state.games[action.name]
+      const tile = game.grid[action.tileNumber]
+
+      const tileChanges = {
+        ...updateNearbyTiles(game.grid, game.size.columns, game.size.rows, action.tileNumber, 2, {
+          highlight: !tile.active
+        }),
+        [action.tileNumber]: {
+          active: !tile.active
+        },
+      }
+
       return {
         ...state,
         games: {
           ...state.games,
           [action.name]: {
-            ...state.games[action.name],
-            grid: updateArrayItem(state.games[action.name].grid, action.tile, {
-              active: !state.games[action.name].grid[action.tile].active
-            })
+            ...game,
+            grid: updateTiles(game.grid, tileChanges),
+            activeUnit: action.tileNumber,
           }
         }
       }
+    }
 
     default:
       return state

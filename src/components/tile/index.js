@@ -3,22 +3,34 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
+import { colors } from 'constants/colors'
+import { unitComponents } from 'constants/units'
 import { toggleTile } from 'reducers/game'
 
 import css from './index.scss'
 
 class Tile extends React.Component {
   render() {
-    const { column, row, isOddColumn, active } = this.props
+    const { column, row, isOddColumn, active, tileNumber, highlight, unit } = this.props
 
-    const classes = classNames(css.tile, {
-      [css.oddColumnTile]: isOddColumn
+    const containerClasses = classNames(css.tile, {
+      [css.oddColumnTile]: isOddColumn,
+      [css.active]: active,
     })
 
+    const TileUnit = unit && unitComponents[unit]
+
     return (
-      <div className={classes} onClick={this.props.toggleTile}>
-        <div className={css.insideTile}>
-          {active && "testing"}
+      <div className={containerClasses} onClick={this.props.toggleTile} style={{'--color': colors[column + 25]}}>
+        <div className={css.innerContainer}>
+          <div className={css.content}>
+            <div>
+              {tileNumber} - {column}, {row}
+            </div>
+            {TileUnit && <TileUnit />}
+            {active && "active"}
+            {highlight && "highlight"}
+          </div>
         </div>
       </div>
     )
@@ -27,14 +39,18 @@ class Tile extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const game = state.game.games[props.match.params.name]
+  const tile = game.grid[props.tileNumber]
+
   return {
-    active: game.grid[props.tile].active
+    active: tile.active,
+    highlight: tile.highlight,
+    unit: tile.unit,
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    toggleTile: name => () => dispatch(toggleTile(name, props.tile))
+    toggleTile: name => () => dispatch(toggleTile(name, props.tileNumber))
   }
 }
 
