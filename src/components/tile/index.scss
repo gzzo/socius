@@ -1,0 +1,31 @@
+.tile {
+  background: cadetblue;
+  width: var(--size);
+  height: calc(var(--size) * 1.15);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  margin-bottom: calc(var(--size) * 1.15 / -4);
+}
+
+.oddColumnTile {
+  margin-left: calc((var(--size) + var(--gap)) / 2);
+  margin-right: calc((var(--size) + var(--gap) * 2) * -1.15 / 2);
+}
+
+.tile::before {
+  content: '';
+  width: 100%;
+  height: 25%;
+  float: left;
+  clip-path: polygon(0% 0%, 0 100%, 50% 0, 100% 100%, 100% 0);
+  shape-outside: polygon(0% 0%, 0 100%, 50% 0, 100% 100%, 100% 0);
+}
+
+.tile:hover {
+  background-color: aqua;
+}
+
+.insideTile {
+  margin-top: calc(var(--size) * 1.15 / 4);
+  margin-left: 5px;
+  margin-right: 5px;
+}

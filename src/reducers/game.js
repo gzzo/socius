@@ -1,34 +1,45 @@
+import _ from 'lodash'
+
 const CREATE_GAME = 'game/CREATE_GAME'
 
-export const createGame = (name, width, height) => {
+export const createGame = (name, columns, rows) => {
   return {
     type: CREATE_GAME,
     name,
-    width,
-    height
+    columns,
+    rows
   }
 }
 
-export const reducer = (state = {}, action) => {
+const createGameState = (action) => {
+  return {
+    size: {
+      columns: action.columns,
+      rows: action.rows,
+    },
+    grid: _.range(action.columns * action.rows).map(cell => {
+      return {
+        info: 'info'
+      }
+    })
+  }
+}
+
+const initialState = {
+  games: {
+    test: createGameState(createGame('test', 20, 20))
+  }
+}
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_GAME:
       return {
         ...state,
         games: {
           ...state.games,
-          [action.name]: {
-            size: {
-              width: action.width,
-              height: action.height,
-            },
-            grid: _.range(action.width * action.height).map(cell => {
-              return {
-                info: 'info'
-              }
-            })
-          }
+          [action.name]: createGameState(action)
         }
-
       }
     default:
       return state

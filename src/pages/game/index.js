@@ -3,13 +3,15 @@ import { connect } from 'react-redux'
 
 import Grid from 'components/grid'
 
+import css from './index.scss'
+
 class GamePage extends React.Component {
   render() {
-    const { width, height } = this.props.game.size
+    const { columns, rows } = this.props.game.size
 
     return (
-      <div>
-        <Grid width={width} height={height} />
+      <div className={css.gridContainer}>
+        <Grid columns={columns} rows={rows} />
       </div>
     )
   }

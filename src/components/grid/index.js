@@ -1,29 +1,28 @@
 import React from 'react'
-import classNames from 'classnames'
 import _ from 'lodash'
+
+import Tile from "components/tile";
 
 import css from './index.scss'
 
 class Grid extends React.Component {
   render() {
-    const { width, height } = this.props
+    const { columns, rows } = this.props
 
     return (
-      <div className={css.grid} style={{'--Nhexa': width}}>
-        {_.range(width * height).map(cell => {
-          const classes = classNames(css.tile, {
-            [css.oddColumnTile]: cell % (width * 2) >= width
-          })
-
-          const column = cell % width
-          const row = Math.floor(cell / width) % height
+      <div className={css.grid} style={{'--columns': columns}}>
+        {_.range(columns * rows).map(tile => {
+          const column = tile % columns
+          const row = Math.floor(tile / columns) % rows
+          const isOddColumn = tile % (columns * 2) >= columns
 
           return (
-            <div className={classes} key={cell} onClick={() => {console.log(column, row)}}>
-              <div className={css.insideTile}>
-                moo
-              </div>
-            </div>
+            <Tile
+              key={tile}
+              row={row}
+              column={column}
+              isOddColumn={isOddColumn}
+            />
           )
         })}
       </div>
