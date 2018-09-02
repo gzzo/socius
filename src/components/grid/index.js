@@ -22,6 +22,7 @@ class Grid extends React.Component {
               row={row}
               column={column}
               isOddColumn={isOddColumn}
+              tile={tile}
             />
           )
         })}

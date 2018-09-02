@@ -7,19 +7,21 @@ import css from './index.scss'
 
 class GamePage extends React.Component {
   render() {
-    const { columns, rows } = this.props.game.size
+    const { columns, rows } = this.props.size
 
     return (
       <div className={css.gridContainer}>
-        <Grid columns={columns} rows={rows} />
+        <Grid columns={columns} rows={rows} name={name} />
       </div>
     )
   }
 }
 
 const mapStateToProps = (state, props) => {
+  const game = state.game.games[props.match.params.name]
   return {
-    game: state.game.games[props.match.params.name]
+    size: game.size,
+    name: props.match.params.name,
   }
 }
 
